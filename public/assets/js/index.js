@@ -31,15 +31,16 @@ const getNotes = () =>
     headers: {
       'Content-Type': 'application/json',
     },
+    
   });
 
-const saveNote = (note) =>
+const saveNote = (newNote) =>
   fetch('/api/notes', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(note),
+    body: JSON.stringify(newNote),
   });
 
 const deleteNote = (id) =>
@@ -54,6 +55,7 @@ const renderActiveNote = () => {
   hide(saveNoteBtn);
 
   if (activeNote.id) {
+    show(saveNoteBtn);
     noteTitle.setAttribute('readonly', true);
     noteText.setAttribute('readonly', true);
     noteTitle.value = activeNote.title;
@@ -181,3 +183,4 @@ if (window.location.pathname === '/notes') {
 }
 
 getAndRenderNotes();
+
