@@ -2,7 +2,6 @@ const router = require('express').Router();
 const notes = require('../../db/db.json');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs'); 
-const path = require('path');
 
 
 router.get('/notes', (req, res) => {
@@ -17,7 +16,7 @@ router.post('/notes', (req, res) => {
 
     notes.push(newNote);
 
-        fs.writeFile('../../db/db.json', JSON.stringify(notes), err => {
+        fs.writeFile('db/db.json', JSON.stringify(notes), err => {
             if (err) {
                 return console.log(err);
             }
@@ -25,6 +24,25 @@ router.post('/notes', (req, res) => {
             
         })
         return res.json(newNote);
+})
+
+router.delete('/notes/:id', (req, res) => {
+    const noteId = req.params.id;
+
+    for (let i = 0; i < notes.length; i++) {
+        if (notes[i].id === noteId) {
+            notes.splice(i, 1);
+        }
+    };
+
+    fs.writeFile('db/db.json', JSON.stringify(notes), err => {
+        if (err) {
+            return console.log(err);
+        }
+        console.log('Note Deleted!')
+        
+    })
+    return res.json(notes);
 })
 
 
